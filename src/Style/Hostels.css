@@ -1,0 +1,100 @@
+ .main-content {
+     padding: 20px;
+     max-width: 1200px;
+
+     margin: 0 auto;
+
+ }
+
+
+ .main-content h2 {
+     font-size: 2rem;
+     color: #17a2b8;
+     margin-bottom: 30px;
+ }
+
+
+ .hostel-card {
+     border-radius: 8px;
+     overflow: hidden;
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
+     background-color: #fff;
+ }
+
+ .hostel-card:hover {
+     transform: scale(1.05);
+     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+ }
+
+
+ .hostel-img {
+     width: 100%;
+     height: 200px;
+     object-fit: cover;
+     border-bottom: 2px solid #f0f0f0;
+ }
+
+
+ .card-body {
+     padding: 20px;
+ }
+
+ .card-title {
+     font-size: 1.25rem;
+     font-weight: bold;
+     color: #007bff;
+ }
+
+ .card-text {
+     font-size: 1rem;
+     color: #6c757d;
+     margin-bottom: 10px;
+ }
+
+
+ .facilities {
+     font-size: 0.9rem;
+     color: #6c757d;
+     margin-bottom: 15px;
+ }
+
+ .facilities span {
+     display: inline-block;
+     background-color: #e9ecef;
+     padding: 5px 10px;
+     margin-right: 8px;
+     border-radius: 4px;
+ }
+
+
+ button.btn-primary {
+     width: 100%;
+     font-size: 1rem;
+     padding: 10px 0;
+     border-radius: 4px;
+ }
+
+
+ @media (max-width: 768px) {
+     .main-content {
+         padding: 10px;
+         max-width: 100%;
+     }
+
+     .card-body {
+         padding: 15px;
+     }
+
+     .card-title {
+         font-size: 1.1rem;
+     }
+
+     .card-text {
+         font-size: 0.95rem;
+     }
+
+     .facilities span {
+         margin-right: 5px;
+         font-size: 0.85rem;
+     }
+ }

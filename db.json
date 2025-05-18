@@ -1,0 +1,173 @@
+{
+    "hostels": [
+        {
+            "id": 1,
+            "name": "Miyapur  Hostels",
+            "description": "A cozy hostel located in the heart of the city, ideal for solo travelers and small groups.",
+            "location": {
+                "latitude": 17.4933,
+                "longitude": 78.3925
+            },
+            "roomTypes": [
+                "Single",
+                "Double",
+                "Triple"
+            ],
+            "roomPrices": {
+                "Single": 500,
+                "Double": 800,
+                "Triple": 1000
+            },
+            "amenities": [
+                "WiFi",
+                "Laundry",
+                "Gym",
+                "Kitchen"
+            ],
+            "address": "123 Main St, Miyapur, Hyderabad",
+            "pricePerNight": 50,
+            "rating": 4.3,
+            "reviews": 128,
+            "image": "https://media.istockphoto.com/id/1045047954/photo/young-backpackers-in-hostel.webp?a=1&b=1&s=612x612&w=0&k=20&c=aCt3q0RQB9TWJpKva-BJ-R2_x69jq4aLnvbumgh-7V8="
+        },
+        {
+            "id": 2,
+            "name": "Bachupally Hostels",
+            "description": "Affordable hostel with a beautiful view, great for peaceful stays.",
+            "location": {
+                "latitude": 17.5500,
+                "longitude": 78.3631
+            },
+            "roomTypes": [
+                "Single",
+                "Double"
+            ],
+            "roomPrices": {
+                "Single": 400,
+                "Double": 700
+            },
+            "amenities": [
+                "WiFi",
+                "Breakfast",
+                "Parking"
+            ],
+            "address": "456 Marina Rd, Bachupally, Hyderabad",
+            "pricePerNight": 40,
+            "rating": 4.6,
+            "reviews": 87,
+            "image": "https://images.unsplash.com/photo-1549881567-c622c1080d78?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8aG9zdGVsfGVufDB8fDB8fHww"
+        },
+        {
+            "id": 3,
+            "name": "Ameerpet  Hostels",
+            "description": "Located in Ameerpet, perfect for travelers seeking adventure.",
+            "location": {
+                "latitude": 17.4369,
+                "longitude": 78.4482
+            },
+            "roomTypes": [
+                "Single",
+                "Double"
+            ],
+            "roomPrices": {
+                "Single": 500,
+                "Double": 750
+            },
+            "amenities": [
+                "WiFi",
+                "Hiking Trails",
+                "Common Lounge",
+                "Breakfast"
+            ],
+            "address": "789 Hillside Rd, Ameerpet, Hyderabad",
+            "pricePerNight": 35,
+            "rating": 4.8,
+            "reviews": 203,
+            "image": "https://images.unsplash.com/photo-1709805619372-40de3f158e83?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8aG9zdGVsfGVufDB8fDB8fHww"
+        },
+        {
+            "id": 4,
+            "name": "L.B. Nagar Hostels",
+            "description": "A vibrant hostel in the heart of L.B. Nagar, great for meeting other travelers.",
+            "location": {
+                "latitude": 17.3441,
+                "longitude": 78.5575
+            },
+            "roomTypes": [
+                "Single",
+                "Double"
+            ],
+            "roomPrices": {
+                "Single": 600,
+                "Double": 900
+            },
+            "amenities": [
+                "WiFi",
+                "Nightlife Events",
+                "Kitchen",
+                "24/7 Reception"
+            ],
+            "address": "321 Connaught Place, L.B. Nagar, Hyderabad",
+            "pricePerNight": 45,
+            "rating": 4.2,
+            "reviews": 305,
+            "image": "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG9zdGVsfGVufDB8fDB8fHww"
+        },
+        {
+            "id": 5,
+            "name": "Gachibowli Hostels",
+            "description": "Eco-friendly hostel surrounded by nature, ideal for relaxation and eco-tourism.",
+            "location": {
+                "latitude": 17.4448,
+                "longitude": 78.3498
+            },
+            "roomTypes": [
+                "Single",
+                "Double"
+            ],
+            "roomPrices": {
+                "Single": 700,
+                "Double": 1000
+            },
+            "amenities": [
+                "WiFi",
+                "Organic Food",
+                "Eco-Tours",
+                "Yoga Sessions"
+            ],
+            "address": "123 Green St, Gachibowli, Hyderabad",
+            "pricePerNight": 60,
+            "rating": 4.7,
+            "reviews": 89,
+            "image": "https://plus.unsplash.com/premium_photo-1717026836061-32ec43465f9b?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG9zdGVsfGVufDB8fDB8fHww"
+        },
+        {
+            "id": 6,
+            "name": "Jubilee Hills  Hostels",
+            "description": "An oasis in Jubilee Hills, offering peace and quiet with comfortable accommodations.",
+            "location": {
+                "latitude": 17.4253,
+                "longitude": 78.4111
+            },
+            "roomTypes": [
+                "Single",
+                "Double"
+            ],
+            "roomPrices": {
+                "Single": 550,
+                "Double": 850
+            },
+            "amenities": [
+                "WiFi",
+                "Pool",
+                "Outdoor Fireplace",
+                "City Tours"
+            ],
+            "address": "654 Sandstone Rd, Jubilee Hills, Hyderabad",
+            "pricePerNight": 55,
+            "rating": 4.5,
+            "reviews": 67,
+            "image": "https://media.istockphoto.com/id/1208347864/photo/friends-planning-trip-on-bunkbed-in-dorm-room.webp?a=1&b=1&s=612x612&w=0&k=20&c=yyzX3ZbPcW3B2vBurK5HWNw_b79YOVEAMPFkYMNg_os="
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+ .room-container {
+     max-width: 800px;
+     margin: 50px auto;
+     padding: 20px;
+     background-color: #fff;
+     border-radius: 10px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     text-align: center;
+ }
+
+
+ .room-container h2 {
+     font-size: 2rem;
+     color: #28a745;
+
+     margin-bottom: 15px;
+ }
+
+
+ .room-container p {
+     font-size: 1rem;
+     color: #333;
+     margin: 10px 0;
+     line-height: 1.6;
+ }
+
+
+ .room-container .price {
+     font-size: 1.25rem;
+     font-weight: bold;
+     color: #ff6347;
+
+ }
+
+ .room-container .amenities {
+     font-size: 1rem;
+     color: #555;
+     list-style-type: none;
+     padding-left: 0;
+ }
+
+ .room-container .amenities li {
+     margin-bottom: 10px;
+ }

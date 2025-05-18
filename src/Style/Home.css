@@ -1,0 +1,51 @@
+ .main-content {
+     padding: 50px 0;
+     background-color: #f8f9fa;
+ }
+
+
+ .main-content h2 {
+     font-weight: 700;
+     color: #007bff;
+
+ }
+
+ .main-content p {
+     font-size: 1.2rem;
+     color: #6c757d;
+
+ }
+
+ .image-zoom {
+     transition: transform 0.3s ease-in-out;
+     max-height: 400px;
+ }
+
+ .image-zoom:hover {
+     transform: scale(1.05);
+
+     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+ }
+
+ @media (max-width: 768px) {
+     .main-content h2 {
+         font-size: 2rem;
+     }
+
+     .main-content p {
+         font-size: 1rem;
+     }
+
+     .image-zoom {
+         max-height: 250px;
+     }
+ }
+
+ .image-zoom {
+     transition: transform 0.4s ease;
+ }
+
+ .image-zoom:hover {
+     transform: scale(1.03);
+ }

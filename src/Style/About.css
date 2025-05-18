@@ -1,0 +1,25 @@
+.about-container {
+    background-color: #f9f9fc;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.about-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.about-description {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.about-features ul {
+    padding-left: 0;
+}
+
+.list-group-item {
+    background-color: transparent;
+    border: none;
+    font-size: 1rem;
+}

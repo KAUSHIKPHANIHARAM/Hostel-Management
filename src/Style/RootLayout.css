@@ -1,0 +1,51 @@
+ .root-layout {
+     display: flex;
+     flex-direction: column;
+     min-height: 100vh;
+     background-color: #f8f9fa;
+ }
+
+
+ .root-layout .content {
+     flex-grow: 1;
+
+     padding: 20px;
+     background-color: #ffffff;
+ }
+
+
+ .root-layout footer {
+     background-color: #343a40;
+     color: white;
+     padding: 10px 0;
+     text-align: center;
+     font-size: 1rem;
+ }
+
+ .root-layout footer p {
+     margin: 0;
+ }
+
+
+ .root-layout header {
+     background-color: #007bff;
+     color: white;
+     padding: 20px 0;
+     text-align: center;
+     font-size: 1.5rem;
+ }
+
+
+ @media (max-width: 768px) {
+     .root-layout .content {
+         padding: 15px;
+     }
+
+     .root-layout header {
+         font-size: 1.25rem;
+     }
+
+     .root-layout footer {
+         font-size: 0.875rem;
+     }
+ }
