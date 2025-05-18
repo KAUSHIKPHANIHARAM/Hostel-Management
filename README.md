@@ -18,7 +18,6 @@
 - 🧠 React Context API (for login state)
 - 🎯 React Hook Form (for form handling)
 - 💅 Tailwind CSS (for styling)
-- 🔗 RESTful API integration (for backend interaction)
 - 🗄️ JSON Server (as mock backend - optional)
 
  
