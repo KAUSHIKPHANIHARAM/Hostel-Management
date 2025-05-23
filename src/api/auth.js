@@ -1,4 +1,3 @@
-// src/api/auth.js
 const API_BASE = 'http://localhost:5000';
 
 export const registerUser = async (formObj) => {

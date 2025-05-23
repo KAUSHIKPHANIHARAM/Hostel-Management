@@ -52,6 +52,10 @@ export default function Home() {
         alert("Subscribed")
     }
 
+    function gotoAbout() {
+        navigate('/about')
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 px-4 py-12 lg:py-24">
             {/* Header Section */}
@@ -82,13 +86,13 @@ export default function Home() {
                         className="px-8 py-4 bg-white text-indigo-600 border-2 border-indigo-600 text-lg font-medium rounded-lg shadow-md hover:bg-indigo-50 transition-all duration-300 transform hover:-translate-y-1"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.98 }}
+                        onClick={gotoAbout}
                     >
                         Learn More
                     </motion.button>
                 </div>
             </motion.div>
 
-            {/* Lottie Animation: Larger and more centered */}
             <motion.div
                 ref={animationRef}
                 className="flex justify-center items-center mt-12 md:mt-16 lg:mt-20"
@@ -106,7 +110,7 @@ export default function Home() {
                 </div>
             </motion.div>
 
-            {/* Cities Section - Improved grid layout */}
+            {/* Cities Sec*/}
             <motion.div
                 ref={citiesRef}
                 className="mt-24 md:mt-32"
@@ -144,7 +148,7 @@ export default function Home() {
                 </div>
             </motion.div>
 
-            {/* Features Section - With improved cards */}
+            {/* Features Section */}
             <motion.div
                 ref={featuresRef}
                 className="mt-24 md:mt-32 max-w-6xl mx-auto"
@@ -196,7 +200,7 @@ export default function Home() {
                 </div>
             </motion.div>
 
-            {/* Testimonials - Improved design */}
+            {/* Testimonials*/}
             <motion.div
                 ref={testimonialRef}
                 className="mt-24 md:mt-32 max-w-4xl mx-auto text-center px-4 mb-16"

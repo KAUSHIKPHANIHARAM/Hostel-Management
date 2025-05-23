@@ -634,7 +634,7 @@ function Booking() {
                                         </motion.div>
                                     </div>
 
-                                    {/* Special Requests */}
+                                    {/* Spl Req*/}
                                     {formData.specialRequests && (
                                         <motion.div 
                                             className="space-y-2 border-b pb-4"
@@ -648,8 +648,7 @@ function Booking() {
                                             </p>
                                         </motion.div>
                                     )}
-                                    
-                                    {/* Price Summary */}
+                                                                       
                                     <motion.div 
                                         className="space-y-3"
                                         initial={{ y: 10, opacity: 0 }}
@@ -673,7 +672,7 @@ function Booking() {
                                         </div>
                                     </motion.div>
 
-                                    {/* Error message if any */}
+                                    {/* Error message */}
                                     {errors.submitError && (
                                         <motion.div 
                                             className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-md"
@@ -684,7 +683,7 @@ function Booking() {
                                         </motion.div>
                                     )}
 
-                                    {/* Navigation Buttons */}
+                                    {/* Nav Buttons */}
                                     <div className="flex justify-between pt-4">
                                         <motion.button
                                             type="button"
