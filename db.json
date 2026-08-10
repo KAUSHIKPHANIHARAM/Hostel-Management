@@ -53,7 +53,7 @@
             ],
             "address": "456 Marina Rd, Bachupally, Hyderabad",
             "pricePerNight": 40,
-            "rating": 4.6,
+            "rating": 3.6,
             "reviews": 87,
             "image": "https://images.unsplash.com/photo-1549881567-c622c1080d78?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8aG9zdGVsfGVufDB8fDB8fHww"
         },
@@ -81,7 +81,7 @@
             ],
             "address": "789 Hillside Rd, Ameerpet, Hyderabad",
             "pricePerNight": 35,
-            "rating": 4.8,
+            "rating": 4.1,
             "reviews": 203,
             "image": "https://images.unsplash.com/photo-1709805619372-40de3f158e83?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8aG9zdGVsfGVufDB8fDB8fHww"
         },
@@ -109,7 +109,7 @@
             ],
             "address": "321 Connaught Place, L.B. Nagar, Hyderabad",
             "pricePerNight": 45,
-            "rating": 4.2,
+            "rating": 3.2,
             "reviews": 305,
             "image": "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG9zdGVsfGVufDB8fDB8fHww"
         },
@@ -137,7 +137,7 @@
             ],
             "address": "123 Green St, Gachibowli, Hyderabad",
             "pricePerNight": 60,
-            "rating": 4.7,
+            "rating": 2.7,
             "reviews": 89,
             "image": "https://plus.unsplash.com/premium_photo-1717026836061-32ec43465f9b?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG9zdGVsfGVufDB8fDB8fHww"
         },
@@ -165,7 +165,7 @@
             ],
             "address": "654 Sandstone Rd, Jubilee Hills, Hyderabad",
             "pricePerNight": 55,
-            "rating": 4.5,
+            "rating": 3.5,
             "reviews": 67,
             "image": "https://media.istockphoto.com/id/1208347864/photo/friends-planning-trip-on-bunkbed-in-dorm-room.webp?a=1&b=1&s=612x612&w=0&k=20&c=yyzX3ZbPcW3B2vBurK5HWNw_b79YOVEAMPFkYMNg_os="
         }
