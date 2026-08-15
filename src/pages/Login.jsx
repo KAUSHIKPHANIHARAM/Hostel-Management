@@ -15,9 +15,10 @@ function Login() {
 
     const handleFormSubmit = async (data) => {
         setIsLoading(true);
-        await userLogin(data);
-        if (loginError) {
-            setErr(loginError);
+        setErr(null);
+        const user = await userLogin(data);
+        if (!user) {
+            setErr({ message: "UserName or password not correct" });
         }
         setIsLoading(false);
     };

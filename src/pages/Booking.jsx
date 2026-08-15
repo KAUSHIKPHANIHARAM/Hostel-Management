@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loginContextObj } from '../contexts/LoginContext';
+import { bookingApi } from '../services/api';
 import '../Style/Booking.css';
 
 const roomTypes = [
@@ -122,45 +123,35 @@ function Booking() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://localhost:5001/bookings', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...formData,
-                    hostelId,
-                    hostelName,
-                    nights: bookingDetails.nights,
-                    totalPrice: bookingDetails.totalPrice
-                })
+            await bookingApi.create({
+                ...formData,
+                hostelId,
+                hostelName,
+                nights: bookingDetails.nights,
+                totalPrice: bookingDetails.totalPrice
             });
 
-            if (response.ok) {
-                // Show success animation before navigating
-                setShowSuccessAnimation(true);
-                setStep(3); // Update step to 3 for payment
-                
-                // Delay navigation to allow animation to play
-                setTimeout(() => {
-                    navigate('/payment', {
-                        state: {
-                            ...formData,
-                            pricePerNight,
-                            nights: bookingDetails.nights,
-                            totalPrice: bookingDetails.totalPrice,
-                            currentStep: 3, // Pass the current step to payment page
-                            hostelName,
-                            hostelImage
-                        }
-                    });
-                }, 1200);
-            } else {
-                const errorData = await response.json();
-                setErrors({ submitError: errorData.message || 'Failed to create booking. Please try again.' });
-                setIsLoading(false);
-            }
+            // Show success animation before navigating
+            setShowSuccessAnimation(true);
+            setStep(3); // Update step to 3 for payment
+            
+            // Delay navigation to allow animation to play
+            setTimeout(() => {
+                navigate('/payment', {
+                    state: {
+                        ...formData,
+                        pricePerNight,
+                        nights: bookingDetails.nights,
+                        totalPrice: bookingDetails.totalPrice,
+                        currentStep: 3, // Pass the current step to payment page
+                        hostelName,
+                        hostelImage
+                    }
+                });
+            }, 1200);
         } catch (error) {
             console.error('Error creating booking:', error);
-            setErrors({ submitError: 'Network error. Please check your connection and try again.' });
+            setErrors({ submitError: error.message || 'Failed to create booking. Please try again.' });
             setIsLoading(false);
         }
     };

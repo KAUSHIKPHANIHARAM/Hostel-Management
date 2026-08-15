@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { motion } from "framer-motion";
 import { loginContextObj } from "../contexts/LoginContext";
+import { hostelApi } from "../services/api";
 import SingleRoom from "./SingleRoom";
 import DoubleRoom from "./DoubleRoom";
 import TripleRoom from "./TripleRoom";
@@ -22,16 +23,16 @@ const HostelDetails = () => {
   useEffect(() => {
     const fetchHostel = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/hostels/${id}`);
-        if (!res.ok) throw new Error("Failed to load hostel data");
-        const data = await res.json();
+        const data = await hostelApi.getById(id);
         setHostel(data);
 
         // create a ref for each roomType string
         const refs = {};
-        data.roomTypes.forEach((type) => {
-          refs[type] = React.createRef();
-        });
+        if (data.roomTypes && Array.isArray(data.roomTypes)) {
+          data.roomTypes.forEach((type) => {
+            refs[type] = React.createRef();
+          });
+        }
         roomTypeRefs.current = refs;
       } catch (e) {
         console.error(e);
@@ -42,12 +43,14 @@ const HostelDetails = () => {
   }, [id]);
 
   const handleBooking = () => {
+    const activeHostelId = hostel.id !== undefined && hostel.id !== null ? hostel.id : (hostel._id || id);
     if (loginStatus) {
       navigate("/booking", {
         state: {
-          hostelId: id,
+          hostelId: activeHostelId,
           hostelName: hostel.name,
-          price: hostel.pricePerNight,
+          pricePerNight: hostel.pricePerNight,
+          hostelImage: hostel.image,
         },
       });
     } else {
@@ -65,6 +68,9 @@ const HostelDetails = () => {
   if (error)
     return <div className="text-red-600 text-center mt-4">{error}</div>;
   if (!hostel) return <div className="text-center mt-5">Loading...</div>;
+
+  const lat = hostel.location?.latitude || 17.4933;
+  const lng = hostel.location?.longitude || 78.3925;
 
   return (
     <div className="bg-gradient-to-r from-blue-100 via-white to-blue-50 min-h-screen py-10 px-5">
@@ -90,11 +96,11 @@ const HostelDetails = () => {
               <strong>Address:</strong> {hostel.address}
             </p>
             <p className="mt-2 text-gray-500">
-              <strong>Amenities:</strong> {hostel.amenities.join(", ")}
+              <strong>Amenities:</strong> {hostel.amenities ? hostel.amenities.join(", ") : ""}
             </p>
             <p className="mt-2 text-gray-500">
               <strong>Room Types:</strong>{" "}
-              {hostel.roomTypes.map((type, idx) => (
+              {hostel.roomTypes && hostel.roomTypes.map((type, idx) => (
                 <span key={type}>
                   <button
                     onClick={() => handleRoomClick(type)}
@@ -114,7 +120,7 @@ const HostelDetails = () => {
                 Book Now
               </button>
               <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${hostel.location.latitude},${hostel.location.longitude}`}
+                href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-700 transition ml-4"
@@ -198,8 +204,8 @@ const HostelDetails = () => {
       </motion.div>
 
       {/* Room Details Sections */}
-      {hostel.roomTypes.map((type) => {
-        const price = hostel.roomPrices[type];
+      {hostel.roomTypes && hostel.roomTypes.map((type) => {
+        const price = hostel.roomPrices ? hostel.roomPrices[type] : hostel.pricePerNight;
         const ref = roomTypeRefs.current[type];
 
         if (type === "Single")
@@ -223,7 +229,7 @@ const HostelDetails = () => {
       <div className="mb-12">
         <h3 className="text-center text-2xl font-semibold text-primary">Location</h3>
         <MapContainer
-          center={[hostel.location.latitude, hostel.location.longitude]}
+          center={[lat, lng]}
           zoom={13}
           style={{ height: "400px", width: "100%" }}
           className="mt-6 rounded-xl shadow-lg"
@@ -232,9 +238,7 @@ const HostelDetails = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; OpenStreetMap contributors"
           />
-          <Marker
-            position={[hostel.location.latitude, hostel.location.longitude]}
-          >
+          <Marker position={[lat, lng]}>
             <Popup>{hostel.name}</Popup>
           </Marker>
         </MapContainer>

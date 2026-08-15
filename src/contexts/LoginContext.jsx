@@ -1,46 +1,92 @@
-import { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import { authApi, setToken, getToken, removeToken, getStoredUser, setStoredUser, removeStoredUser } from "../services/api";
+
 export const loginContextObj = createContext();
-import React from 'react'
 
 function LoginContext({ children }) {
-    const [currentUser, setCurrentUser] = useState(null);
-    const [loginStatus, setLoginStatus] = useState(false)
+    const [currentUser, setCurrentUser] = useState(() => getStoredUser());
+    const [loginStatus, setLoginStatus] = useState(() => Boolean(getToken() && getStoredUser()));
     const [loginError, setLoginError] = useState(null);
 
-    //user login
-    function userLogin({ username, password }) {
-        fetch(`http://localhost:5000/users?username=${username}&password=${password}`)
-            .then(res => res.json())
-            .then((formObj) => {
-                //console.log(formObj)
-                if (formObj.length === 0) {
-                    setLoginError({ message: "UserName or password not correct" })
-                }
-                else {
-                    setCurrentUser(formObj[0])
-                    setLoginError(null);
-                    setLoginStatus(true)
-                }
-            })
-            .catch(err => {
-                console.log("Err is: ", err)
-            })
+    // Check token validity on mount
+    useEffect(() => {
+        const token = getToken();
+        if (token) {
+            authApi.getMe()
+                .then(user => {
+                    setCurrentUser(user);
+                    setStoredUser(user);
+                    setLoginStatus(true);
+                })
+                .catch(() => {
+                    // Token expired or invalid
+                    removeToken();
+                    removeStoredUser();
+                    setCurrentUser(null);
+                    setLoginStatus(false);
+                });
+        }
+    }, []);
+
+    // Sync currentUser changes to localStorage
+    const handleSetCurrentUser = (user) => {
+        setCurrentUser(user);
+        if (user) {
+            setStoredUser(user);
+        } else {
+            removeStoredUser();
+        }
+    };
+
+    // User login
+    async function userLogin({ username, password }) {
+        try {
+            setLoginError(null);
+            const response = await authApi.login({ username, password });
+            
+            if (response && response.token && response.user) {
+                setToken(response.token);
+                handleSetCurrentUser(response.user);
+                setLoginStatus(true);
+                setLoginError(null);
+                return response.user;
+            } else {
+                throw new Error("Invalid login response");
+            }
+        } catch (err) {
+            console.error("Login failed:", err);
+            const errorMessage = err.message || "UserName or password not correct";
+            setLoginError({ message: errorMessage });
+            setLoginStatus(false);
+            return null;
+        }
     }
 
-    //user logout
+    // User logout
     function userLogout() {
-        setCurrentUser(null)
+        removeToken();
+        removeStoredUser();
+        setCurrentUser(null);
         setLoginError(null);
-        setLoginStatus(false)
+        setLoginStatus(false);
     }
+
     return (
         <div>
-            <loginContextObj.Provider value={{ currentUser, setCurrentUser, loginStatus, loginError, userLogin, userLogout }}>
+            <loginContextObj.Provider
+                value={{
+                    currentUser,
+                    setCurrentUser: handleSetCurrentUser,
+                    loginStatus,
+                    loginError,
+                    userLogin,
+                    userLogout
+                }}
+            >
                 {children}
             </loginContextObj.Provider>
-
         </div>
-    )
+    );
 }
 
-export default LoginContext
+export default LoginContext;

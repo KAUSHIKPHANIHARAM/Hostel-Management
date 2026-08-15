@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { IoIosStar } from "react-icons/io";
+import { hostelApi } from "../services/api";
 
 const Hostels = () => {
     const [hostels, setHostels] = useState([]);
@@ -14,6 +15,7 @@ const Hostels = () => {
         searchTerm: ""
     });
     const [showFilters, setShowFilters] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
     // Available amenities for filter options
@@ -24,15 +26,17 @@ const Hostels = () => {
 
     useEffect(() => {
         const fetchHostels = async () => {
+            setIsLoading(true);
             try {
-                const response = await fetch(`http://localhost:4000/hostels`);
-                if (!response.ok) throw new Error("Failed to fetch hostels");
-                const data = await response.json();// because js shd not block next ines of code!!
+                const data = await hostelApi.getAll();
                 setHostels(data);
                 setFilteredHostels(data);
+                setError("");
             } catch (err) {
                 console.error("Error fetching hostels:", err);
                 setError("Unable to load hostels. Please try again later.");
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -45,19 +49,22 @@ const Hostels = () => {
             // Rating filter
             if (hostel.rating < filters.minRating) return false;
 
-            // Price filter (assuming hostel has a price property)
-            if (hostel.price && hostel.price > filters.maxPrice) return false;
+            // Price filter
+            const price = hostel.pricePerNight || hostel.price || 0;
+            if (price && price > filters.maxPrice) return false;
 
             // Search term filter
-            if (filters.searchTerm && !hostel.name.toLowerCase().includes(filters.searchTerm.toLowerCase()) &&
-                !hostel.description.toLowerCase().includes(filters.searchTerm.toLowerCase())) {
+            if (filters.searchTerm && 
+                !hostel.name?.toLowerCase().includes(filters.searchTerm.toLowerCase()) &&
+                !hostel.description?.toLowerCase().includes(filters.searchTerm.toLowerCase()) &&
+                !hostel.address?.toLowerCase().includes(filters.searchTerm.toLowerCase())) {
                 return false;
             }
 
             // Amenities filter
             if (filters.amenities.length > 0) {
                 const hasAllAmenities = filters.amenities.every(amenity =>
-                    hostel.amenities.includes(amenity)
+                    hostel.amenities?.includes(amenity)
                 );
                 if (!hasAllAmenities) return false;
             }
@@ -69,7 +76,8 @@ const Hostels = () => {
     }, [hostels, filters]);
 
     const handleViewDetails = (hostel) => {
-        navigate(`/hostels/${hostel.id}`, { state: { hostelUrl: hostel.image } });
+        const hostelId = hostel.id !== undefined && hostel.id !== null ? hostel.id : hostel._id;
+        navigate(`/hostels/${hostelId}`, { state: { hostelUrl: hostel.image } });
     };
 
     const handleFilterChange = (filterType, value) => {
@@ -160,9 +168,9 @@ const Hostels = () => {
                                 </label>
                                 <input
                                     type="range"
-                                    min="1000"
-                                    max="10000"
-                                    step="500"
+                                    min="10"
+                                    max="1000"
+                                    step="10"
                                     value={filters.maxPrice}
                                     onChange={(e) => handleFilterChange('maxPrice', parseInt(e.target.value))}
                                     className="w-full"
@@ -204,55 +212,61 @@ const Hostels = () => {
                 )}
             </div>
 
-            {error && <div className="text-red-600 text-center">{error}</div>}
+            {isLoading && <div className="text-center py-10 text-gray-600">Loading hostels...</div>}
+            {error && <div className="text-red-600 text-center py-4">{error}</div>}
 
-            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
-                {filteredHostels.map((hostel, index) => (
-                    <motion.div
-                        key={hostel.id}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300"
-                    >
-                        <img
-                            src={hostel.image}
-                            alt={hostel.name}
-                            className="w-full h-48 object-cover rounded-t-xl"
-                        />
-                        <div className="p-4">
-                            <div className="flex justify-between items-center mb-2">
-                                <h3 className="text-xl font-semibold text-blue-700">{hostel.name}</h3>
-                                <div className="flex items-center space-x-1 text-yellow-500">
-                                    <IoIosStar className="text-lg" />
-                                    <p className="text-sm font-medium text-gray-800">{hostel.rating}</p>
-                                </div>
-                            </div>
-
-                            <p className="text-gray-600 text-sm mt-1">{hostel.description}</p>
-                            <div className="mt-3 flex flex-wrap gap-2">
-                                {hostel.amenities.slice(0, 3).map((amenity, i) => (
-                                    <span
-                                        key={i}
-                                        className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
-                                    >
-                                        {amenity}
-                                    </span>
-                                ))}
-                            </div>
-                            <button
-                                onClick={() => handleViewDetails(hostel)}
-                                className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            {!isLoading && (
+                <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+                    {filteredHostels.map((hostel, index) => {
+                        const hostelKey = hostel.id || hostel._id || index;
+                        return (
+                            <motion.div
+                                key={hostelKey}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300"
                             >
-                                View Details
-                            </button>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
+                                <img
+                                    src={hostel.image}
+                                    alt={hostel.name}
+                                    className="w-full h-48 object-cover rounded-t-xl"
+                                />
+                                <div className="p-4">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <h3 className="text-xl font-semibold text-blue-700">{hostel.name}</h3>
+                                        <div className="flex items-center space-x-1 text-yellow-500">
+                                            <IoIosStar className="text-lg" />
+                                            <p className="text-sm font-medium text-gray-800">{hostel.rating}</p>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-gray-600 text-sm mt-1">{hostel.description}</p>
+                                    <div className="mt-3 flex flex-wrap gap-2">
+                                        {hostel.amenities && hostel.amenities.slice(0, 3).map((amenity, i) => (
+                                            <span
+                                                key={i}
+                                                className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                                            >
+                                                {amenity}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <button
+                                        onClick={() => handleViewDetails(hostel)}
+                                        className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                                    >
+                                        View Details
+                                    </button>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
+                </div>
+            )}
 
             {/* No results message */}
-            {filteredHostels.length === 0 && hostels.length > 0 && (
+            {!isLoading && filteredHostels.length === 0 && hostels.length > 0 && (
                 <div className="text-center py-10">
                     <p className="text-gray-600 text-lg">No hostels match your current filters.</p>
                     <button

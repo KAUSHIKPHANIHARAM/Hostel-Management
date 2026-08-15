@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { loginContextObj } from '../contexts/LoginContext';
+import { userApi } from '../services/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../Style/UserProfile.css';
@@ -11,7 +12,7 @@ import {
 } from 'react-icons/fa';
 
 function UserProfile() {
-    const { currentUser, setCurrentUser } = useContext(loginContextObj);
+    const { currentUser, setCurrentUser, userLogout } = useContext(loginContextObj);
     const [isEdit, setEdit] = useState(false);
     const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const navigate = useNavigate();
@@ -22,8 +23,8 @@ function UserProfile() {
     // Set initial values
     useEffect(() => {
         if (currentUser) {
-            setValue('username', currentUser.username);
-            setValue('email', currentUser.email);
+            setValue('username', currentUser.username || '');
+            setValue('email', currentUser.email || '');
             setValue('phone', currentUser.phone || '');
             setValue('address', currentUser.address || '');
             setValue('bio', currentUser.bio || '');
@@ -32,11 +33,11 @@ function UserProfile() {
         }
     }, [currentUser, setValue]);
 
-    const countFilled = [
+    const countFilled = currentUser ? [
         currentUser.phone, currentUser.address,
         currentUser.dob, currentUser.gender,
         currentUser.bio, currentUser.email
-    ].filter(Boolean).length;
+    ].filter(Boolean).length : 0;
 
     const completionPercent = Math.floor((countFilled / 6) * 100);
 
@@ -50,23 +51,17 @@ function UserProfile() {
         setLoading(true);
         setError(null);
         setSuccess(null);
-        newObj.id = currentUser.id;
+
+        const userId = currentUser?.id || currentUser?._id || 'me';
 
         try {
-            const response = await fetch(`http://localhost:5000/users/${newObj.id}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newObj),
-            });
-
-            if (!response.ok) throw new Error('Update failed');
-
-            const data = await response.json();
+            const data = await userApi.updateProfile(userId, newObj);
             setCurrentUser(data);
             setEdit(false);
             setSuccess('Profile updated successfully!');
         } catch (err) {
-            setError('Failed to update user. Please try again later.');
+            console.error('Update error:', err);
+            setError(err.message || 'Failed to update user. Please try again later.');
         } finally {
             setLoading(false);
         }
@@ -79,21 +74,25 @@ function UserProfile() {
         setError(null);
         setSuccess(null);
 
+        const userId = id || currentUser?.id || currentUser?._id || 'me';
+
         try {
-            const response = await fetch(`http://localhost:5000/users/${id}`, { method: 'DELETE' });
-
-            if (!response.ok) throw new Error('Delete failed');
-
-            setCurrentUser(null);
+            await userApi.deleteAccount(userId);
+            if (userLogout) {
+                userLogout();
+            } else {
+                setCurrentUser(null);
+            }
             navigate('/');
         } catch (err) {
-            setError('Failed to delete user.');
+            console.error('Delete error:', err);
+            setError(err.message || 'Failed to delete user.');
         } finally {
             setLoading(false);
         }
     }
 
-    if (!currentUser) return <p className="text-center text-warning">User not found.</p>;
+    if (!currentUser) return <p className="text-center text-warning mt-5">User not found. Please log in.</p>;
 
     return (
         <motion.div
@@ -175,7 +174,7 @@ function UserProfile() {
 
                         <div className="text-center mt-4">
                             <button className="btn btn-warning mx-2" onClick={onEdit}>Edit Profile</button>
-                            <button className="btn btn-danger mx-2" onClick={() => deleteUser(currentUser.id)}>Delete Account</button>
+                            <button className="btn btn-danger mx-2" onClick={() => deleteUser(currentUser.id || currentUser._id)}>Delete Account</button>
                         </div>
                     </div>
 

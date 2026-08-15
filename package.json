@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "node backend/server.js",
+    "seed": "node backend/seed.js",
+    "test:backend": "node backend/test-api.js"
   },
   "dependencies": {
     "axios": "^1.7.7",

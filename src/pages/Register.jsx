@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
+import { authApi } from '../services/api';
 
 function Register() {
     const { register, handleSubmit, watch } = useForm();
     const navigate = useNavigate();
     const [err, setErr] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const password = watch("password");
 
     const handleFormSubmit = async (formObj) => {
@@ -14,24 +16,21 @@ function Register() {
             return;
         }
 
+        setIsLoading(true);
+        setErr(null);
+
         try {
-            const response = await fetch(`http://localhost:5000/users`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    username: formObj.username,
-                    email: formObj.email,
-                    password: formObj.password
-                })
+            await authApi.register({
+                username: formObj.username,
+                email: formObj.email,
+                password: formObj.password
             });
 
-            if (response.status === 201) {
-                navigate('/login');
-            } else {
-                setErr({ message: "Failed to register. Please try again." });
-            }
+            navigate('/login');
         } catch (error) {
-            setErr({ message: error.message });
+            setErr({ message: error.message || "Failed to register. Please try again." });
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -81,7 +80,13 @@ function Register() {
                             required
                         />
                     </div>
-                    <button type="submit" className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">Register</button>
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-50"
+                    >
+                        {isLoading ? 'Registering...' : 'Register'}
+                    </button>
                 </form>
                 <p className="text-center text-sm mt-4">
                     Already registered? <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
